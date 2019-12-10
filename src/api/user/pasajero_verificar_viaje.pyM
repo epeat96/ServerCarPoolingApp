@@ -1,0 +1,61 @@
+#!/opt/rh/httpd24/root/var/www/ucar/html/env2/bin/python3
+from flask import request
+from peewee import Select
+from flask import jsonify
+from flask import Blueprint
+import datetime 
+from datetime import date 
+from api.util import update_user_conn
+from api.util import require_api_token
+from api.util import content_type_json
+from orm.model.ucar.persona import Persona
+from orm.model.ucar.cola_de_pedidos import ColaDePedidos
+from orm.model.ucar.viaje import Viaje
+from orm.model.ucar.itinerario import Itinerario
+import time
+
+dias["lunes"] = 0
+dias["martes"] = 1
+dias["miercoles"] = 2
+dias["jueves"] = 3
+dias["viernes"] = 4 
+dias["sabado"] = 5
+dias["domingo"] = 6
+
+INDEX = 'verificar'
+PATH = '/ucar/pasajero/viaje/'
+index_pasajero_verificar_viaje = Blueprint(INDEX, __name__)
+
+@index_pasajero_verificar_viaje.route(PATH + INDEX, methods=['POST'])
+@require_api_token
+@content_type_json
+def verificar_viaje():
+	try:
+#Aca se recibe el id y se controla si hay algun viaje para ese pasajero, de ser asi
+# se le responde true y la informacion del viaje, si no se le responde false y el resto vacio
+		data = dict(request.get_json())
+		respuesta["respuesta"] = "FALSE"
+		respuesta["message"] = "Viaje Expirado!"
+		i = 0
+		queryList=[]
+		while i < 59 :
+			query = ColaDePedidos.select.where(
+				(ColaDePedidos.fk_persona_id==data["id"]) & 
+				(ColaDePedidos.estado=="no atendido") & 
+				(ColaDePedidos.fecha==datetime.datetime.now()) &
+				((ColaDePedidos.hora.to_timestamp()) < (datetime.datetime.now().timestamp() - 60))
+				)
+			if query.exists():
+				for result in query.dicts():
+					queryList.append(result)
+				queryDict = jsonify(queryList)	
+				respuesta["idChofer"] = queryDict["fk_chofer_id"]
+				query2 =
+				
+	
+				return respuesta 
+			time.sleep(1)
+			i=i+1
+		return respuesta	
+	except :
+		return {"status":"error","message":"El usuario no se encuentra registrado!"}

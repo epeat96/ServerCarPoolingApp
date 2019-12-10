@@ -1,0 +1,25 @@
+#!/opt/rh/httpd24/root/var/www/ucar/html/env2/bin/python3
+from flask import request
+from peewee import Select
+from flask import Blueprint
+from api.util import update_user_conn
+from api.util import require_api_token
+from api.util import content_type_json
+from orm.model.ucar.persona import Persona
+import time
+
+INDEX = 'verificar'
+PATH = '/ucar/pasajero/viaje/'
+index_pasajero_verificar_viaje = Blueprint(INDEX, __name__)
+
+@index_pasajero_verificar_viaje.route(PATH + INDEX, methods=['POST'])
+@require_api_token
+@content_type_json
+def verificar_viaje():
+	try:
+#Aca se recibe el id y se controla si hay algun viaje para ese pasajero, de ser asi
+# se le responde true y la informacion del viaje, si no se le responde false y el resto vacio
+		time.sleep(30)
+		return {"respuesta":"TRUE","message":"Viaje Encontrado!"}
+	except :
+		return {"status":"error","message":"El usuario no se encuentra registrado!"}

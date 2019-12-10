@@ -1,0 +1,7 @@
+{
+    "database":"ucar",
+    "user":"ucar_api",
+    "password":"#7h3m4573r!.",
+    "host":"127.0.0.1",
+    "port":5432
+}
