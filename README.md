@@ -1,2 +1,4 @@
 # ServerCarPoolingApp
-Codigo del backen de la aplicacion de Car Pooling 
+Codigo del backend de la aplicacion de Car Pooling.
+
+ServerCarPoolingApp was an university project and is currently discontinued.
